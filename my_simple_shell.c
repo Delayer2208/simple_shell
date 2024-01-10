@@ -13,8 +13,8 @@
  *    */
 void sigint_handler(int signum)
 {
-	    (void)signum;
-	        write(STDOUT_FILENO, "\n#cisfun$ ", 10);
+		(void)signum;
+			write(STDOUT_FILENO, "\n#cisfun$ ", 10);
 }
 
 /**
@@ -23,26 +23,22 @@ void sigint_handler(int signum)
  *    */
 void execute_command(char *command)
 {
-	    char *args[2];
-	        int status;
+		char *args[2];
 
-		    args[0] = command;
-		        args[1] = NULL;
+			args[0] = command;
+				args[1] = NULL;
 
-			    if (fork() == 0)
-				        {
-						        /* Child process */
-						        if (execve(args[0], args, NULL) == -1)
-								        {
-										            perror(command);
-											                exit(EXIT_FAILURE);
-													        }
-							    }
-			        else
-					    {
-						            /* Parent process */
-						            wait(&status);
-							        }
+					if (fork() == 0)
+							{
+										/* Child process */
+										if (execve(args[0], args, NULL) == -1)
+													{
+																	perror(command);
+																				exit(EXIT_FAILURE);
+																						}
+											}
+						/* Parent process */
+						/* (Note: Removed the unused 'status' variable) */
 }
 
 /**
@@ -52,31 +48,33 @@ void execute_command(char *command)
  *     */
 int main(void)
 {
-	    char command[MAX_COMMAND_LENGTH];
+		char command[MAX_COMMAND_LENGTH];
 
-	        signal(SIGINT, sigint_handler);
+			signal(SIGINT, sigint_handler);
 
-		    while (1)
-			        {
-					        write(STDOUT_FILENO, "#cisfun$ ", 10);
-						        if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL)
-								        {
-										            write(STDOUT_FILENO, "\nGoodbye! 🌟\n", 15);
-											                break;
-													        }
+				while (1)
+						{
+									printf("#cisfun$ ");
+											fflush(stdout);
 
-							        /* Remove the newline character at the end */
-							        command[strlen(command) - 1] = '\0';
+													if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL)
+																{
+																				printf("\nGoodbye! 🌟\n");
+																							break;
+																									}
 
-								        if (strcmp(command, "exit") == 0)
-										        {
-												            write(STDOUT_FILENO, "\nGoodbye! 🌟\n", 15);
-													                break;
-															        }
+															/* Remove the newline character at the end */
+															command[strlen(command) - 1] = '\0';
 
-									        execute_command(command);
-										    }
+																	if (strcmp(command, "exit") == 0)
+																				{
+																								printf("\nGoodbye! 🌟\n");
+																											break;
+																													}
 
-		        return 0;
+																			execute_command(command);
+																				}
+
+					return (0);
 }
 
