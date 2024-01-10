@@ -5,7 +5,7 @@
 #include <signal.h>
 #include <string.h>
 
-extern char **environ;  // Declaration of environ variable
+extern char **environ;  /* Declaration of environ variable */
 
 #define MAX_COMMAND_LENGTH 100
 
