@@ -5,6 +5,6 @@
  *   */
 void display_prompt(void)
 {
-	    write(STDOUT_FILENO, "#cisfun$ ", 10);
+		/* TODO: Implement prompt display logic */
 }
 

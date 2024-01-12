@@ -1,36 +1,23 @@
 #include "shell.h"
 
-/**
- *  * main - Simple Shell 0.2
- *   *
- *    * Return: Always 0 (Success)
- *     */
-int main(void)
-{
-	    char command[MAX_COMMAND_LENGTH];
+int main(void) {
+	    char command[100];
 
+	        /* Install the signal handler for SIGINT */
 	        signal(SIGINT, sigint_handler);
 
-		    while (1)
-			        {
-					        display_prompt();
-						        if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL)
-								        {
-										            write(STDOUT_FILENO, "\nGoodbye! 🌟\n", 15);
-											                break;
-													        }
+		    while (1) {
+			            printf("#cisfun$ ");
+				            if (fgets(command, sizeof(command), stdin) == NULL) {
+						                printf("\n");
+								            break; /* Exit on Ctrl+D (EOF) */
+									            }
 
-							        /* Remove the newline character at the end */
-							        command[strlen(command) - 1] = '\0';
+					            /* Remove newline character */
+					            command[strcspn(command, "\n")] = '\0';
 
-								        if (strcmp(command, "exit") == 0)
-										        {
-												            write(STDOUT_FILENO, "\nGoodbye! 🌟\n", 15);
-													                break;
-															        }
-
-									        execute_command(command);
-										    }
+						            execute_command(command);
+							        }
 
 		        return 0;
 }
